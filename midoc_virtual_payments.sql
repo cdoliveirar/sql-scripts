@@ -358,7 +358,7 @@ CREATE TABLE recovery_email(
   last_modified_date        timestamp(3) without time zone DEFAULT NULL,
   constraint recovery_email_pk primary key(id),
   CONSTRAINT recovery_email_fk FOREIGN KEY(patient_id) REFERENCES patient(id)
-  
+
 );
 
 
@@ -557,6 +557,10 @@ select * from location;
 select * from patient;
 INSERT INTO patient(location_id, name, year_of_birth, email, midoc_user, password, dni, picture_url, blood_type, allergic_reaction, token_sinch, is_enterprise_enabled)
 VALUES (2,'Leo Ramirez','2000-03-15','leo.ramirez.o@gmail.com','lramirez','123456','50607089',null,'RH-','No Alergias','42314123',null);
+
+INSERT INTO patient(location_id, name, year_of_birth, email, midoc_user, password, dni, picture_url, blood_type, allergic_reaction, token_sinch, is_enterprise_enabled)
+VALUES (2,'Carlos Oliveira','2000-03-15','cdoliveirar@gmail.com','coliveira','123456','50607089',null,'RH-','No Alergias','42314123',null);
+
 INSERT INTO patient(location_id, name, year_of_birth, email, midoc_user, password, dni, picture_url, blood_type, allergic_reaction, token_sinch, is_enterprise_enabled)
 VALUES (1, 'Fredy Alejandro','1940-02-15','fredyac0106@gmail.com','falejandro','12334','50607090',null,'RH-','MultipleAlergias','42314123',null);
 INSERT INTO patient(location_id, name, year_of_birth, email, midoc_user, password, dni, picture_url, blood_type, allergic_reaction, token_sinch, is_enterprise_enabled)
@@ -777,9 +781,7 @@ update doctor
 set call_activate = 'I'
 
 
-update voucher
-set state = 0
-where id = 1;
+SELECT * from patient
 
 
 
@@ -792,5 +794,7 @@ DELETE from doctor where id in (2,3);
 
 select * from patient;
 
+
 select * from doctor;
 alter table patient add COLUMN count_calling INTEGER;
+
