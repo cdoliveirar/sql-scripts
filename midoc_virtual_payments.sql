@@ -792,9 +792,7 @@ alter table doctor add COLUMN queue_count INTEGER;
 
 DELETE from doctor where id in (2,3);
 
-select * from patient;
+select * from recovery_email; 
 
 
-select * from doctor;
-alter table patient add COLUMN count_calling INTEGER;
 
