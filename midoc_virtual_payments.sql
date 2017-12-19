@@ -326,7 +326,7 @@ CREATE TABLE plan(
   CONSTRAINT plantype_id_fk FOREIGN KEY (plantype_id) REFERENCES plantype(id)
 );
 
-drop TABLE payment_transaction;
+-- drop TABLE payment_transaction;
 
 select * from payment_transaction;
 create table payment_transaction(
@@ -361,6 +361,18 @@ CREATE TABLE recovery_email(
 
 );
 
+select * from patient_plan;
+
+create table patient_plan(
+  id                        SERIAL NOT NULL,
+  patient_id                INTEGER ,
+  plan_id                   INTEGER ,
+  date_created              timestamp with time zone,
+  last_modified_date        timestamp(3) without time zone DEFAULT NULL,
+  CONSTRAINT patient_plan_pk PRIMARY key(id),
+  CONSTRAINT patient_plan_fk1 FOREIGN KEY(patient_id) REFERENCES patient(id),
+  CONSTRAINT patient_plan_fk2 FOREIGN KEY(plan_id) REFERENCES plan(id)
+);
 
 
 -- ======================
@@ -781,18 +793,26 @@ update doctor
 set call_activate = 'I'
 
 
-SELECT * from patient
+SELECT * from patient where email ='tavo.tf@gmail.com';
+select LENGTH(code) from recovery_email where code = '1QKVB3';
 
+
+select * from plan;
 
 
 
 
 alter table doctor add COLUMN in_call boolean;
 alter table doctor add COLUMN queue_count INTEGER;
+--
+-- DELETE from doctor where id in (2,3);
+--
+select * from recovery_email;
+--
+SELECT * from plan;
+alter table plan add COLUMN quantity INTEGER ;
 
-DELETE from doctor where id in (2,3);
 
-select * from recovery_email; 
 
 
 
