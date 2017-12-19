@@ -1,4 +1,5 @@
 /**/
+
 create table license (
   id                        SERIAL NOT NULL,
   code                      INTEGER ,
@@ -12,7 +13,7 @@ create table license (
   CONSTRAINT pk_license PRIMARY KEY (id)
 );
 
-
+SELECT * FROM enterprise;
 /**/
 CREATE TABLE enterprise (
   id                        SERIAL NOT NULL,
@@ -41,6 +42,7 @@ CREATE TABLE enterprise (
 
 
 /**/
+
 create table location (
   id                        SERIAL NOT NULL ,
   enterprise_id             INTEGER ,
@@ -117,12 +119,15 @@ create table doctor(
   CONSTRAINT pk_doctor primary key (id) ,
   CONSTRAINT fk_emergency_attention_id FOREIGN KEY (emergency_attention_id) REFERENCES emergency_attention(id)
 );
-https://stackoverflow.com/questions/15988084/django-and-bidirectional-relationship-between-model
+-- https://stackoverflow.com/questions/15988084/django-and-bidirectional-relationship-between-model
+
+SELECT * FROM patient;
 
 /**/
 create table patient(
   id                        serial not null,
-  location_id               INTEGER ,
+  -- location_id               INTEGER ,
+  enterprise_id             INTEGER ,
   name                      varchar(100),
   year_of_birth             date,
   email                     varchar(100),
@@ -144,7 +149,8 @@ create table patient(
   last_modified_date        timestamp(3) without time zone DEFAULT NULL,
   last_modified_by		      text,
   constraint pk_patient primary key (id),
-  CONSTRAINT fk_patient_location_id FOREIGN KEY (location_id) REFERENCES location(id)
+  CONSTRAINT fk_patient_enterprise_id FOREIGN KEY (enterprise_id) REFERENCES enterprise(id)
+  -- CONSTRAINT fk_patient_location_id FOREIGN KEY (location_id) REFERENCES location(id)
 );
 
 
@@ -189,8 +195,8 @@ create table  medical_history(
   last_modified_by		      text,
   CONSTRAINT pk_medical_history PRIMARY KEY (id),
   CONSTRAINT fk_patient_id FOREIGN KEY (patient_id) REFERENCES patient(id),
-  CONSTRAINT fk_doctor_id FOREIGN KEY (doctor_id) REFERENCES doctor(id),
-  CONSTRAINT fk_emergencista_id FOREIGN KEY (emergencista_id) REFERENCES doctor(id)
+  CONSTRAINT fk_doctor_id FOREIGN KEY (doctor_id) REFERENCES doctor(id)
+  -- CONSTRAINT fk_emergencista_id FOREIGN KEY (emergencista_id) REFERENCES doctor(id)
 );
 
 /**/
@@ -315,7 +321,7 @@ CREATE TABLE plantype(
 
 
 select * from plan;
-drop TABLE plan
+
 CREATE TABLE plan(
   id                        serial NOT NULL,
   amount                    numeric(12,2),
@@ -326,9 +332,7 @@ CREATE TABLE plan(
   CONSTRAINT plantype_id_fk FOREIGN KEY (plantype_id) REFERENCES plantype(id)
 );
 
--- drop TABLE payment_transaction;
 
-select * from payment_transaction;
 create table payment_transaction(
   id                        SERIAL NOT NULL,
   plan_id                   integer,
@@ -347,7 +351,6 @@ create table payment_transaction(
 );
 
 
-
 CREATE TABLE recovery_email(
   id                        SERIAL NOT NULL,
   patient_id                INTEGER ,
@@ -360,8 +363,6 @@ CREATE TABLE recovery_email(
   CONSTRAINT recovery_email_fk FOREIGN KEY(patient_id) REFERENCES patient(id)
 
 );
-
-select * from patient_plan;
 
 create table patient_plan(
   id                        SERIAL NOT NULL,
@@ -472,7 +473,7 @@ VALUES (1,1 ,'777666','Nutricionista','Ian Perez','1985-01-01',
 
 insert INTO doctor( emergency_attention_id, location_id, cmd_peru, degree, doctor_name, year_of_birth,
 picture_url, email, midoc_user, password, type_of_specialist, is_enabled,in_call,queue_count)
-VALUES (3,1 ,'777666','Nutricionista','Pedro JuanPablo','1985-01-01',
+VALUES (1,1 ,'777666','Nutricionista','Pedro JuanPablo','1985-01-01',
 'https://res.cloudinary.com/dzthuikyb/image/upload/v1500998377/doctor_02_nwodq0.jpg','pedrojuanpi@gmail.com','pedroj','123456','ESPEC',TRUE, FALSE , 0);
 
 
@@ -565,22 +566,22 @@ VALUES (3,5 );
 
 
 -- patient
+SELECT * FROM enterprise;
 select * from location;
 select * from patient;
-INSERT INTO patient(location_id, name, year_of_birth, email, midoc_user, password, dni, picture_url, blood_type, allergic_reaction, token_sinch, is_enterprise_enabled)
-VALUES (2,'Leo Ramirez','2000-03-15','leo.ramirez.o@gmail.com','lramirez','123456','50607089',null,'RH-','No Alergias','42314123',null);
-
-INSERT INTO patient(location_id, name, year_of_birth, email, midoc_user, password, dni, picture_url, blood_type, allergic_reaction, token_sinch, is_enterprise_enabled)
-VALUES (2,'Carlos Oliveira','2000-03-15','cdoliveirar@gmail.com','coliveira','123456','50607089',null,'RH-','No Alergias','42314123',null);
-
-INSERT INTO patient(location_id, name, year_of_birth, email, midoc_user, password, dni, picture_url, blood_type, allergic_reaction, token_sinch, is_enterprise_enabled)
+INSERT INTO patient(enterprise_id, name, year_of_birth, email, midoc_user, password, dni, picture_url, blood_type, allergic_reaction, token_sinch, is_enterprise_enabled)
+VALUES (1,'Leo Ramirez','2000-03-15','leo.ramirez.o@gmail.com','lramirez','123456','50607089',null,'RH-','No Alergias','42314123',null);
+INSERT INTO patient(enterprise_id, name, year_of_birth, email, midoc_user, password, dni, picture_url, blood_type, allergic_reaction, token_sinch, is_enterprise_enabled)
+VALUES (1,'Carlos Oliveira','2000-03-15','cdoliveirar@gmail.com','coliveira','123456','50607089',null,'RH-','No Alergias','42314123',null);
+INSERT INTO patient(enterprise_id, name, year_of_birth, email, midoc_user, password, dni, picture_url, blood_type, allergic_reaction, token_sinch, is_enterprise_enabled)
 VALUES (1, 'Fredy Alejandro','1940-02-15','fredyac0106@gmail.com','falejandro','12334','50607090',null,'RH-','MultipleAlergias','42314123',null);
-INSERT INTO patient(location_id, name, year_of_birth, email, midoc_user, password, dni, picture_url, blood_type, allergic_reaction, token_sinch, is_enterprise_enabled)
+
+INSERT INTO patient(enterprise_id, name, year_of_birth, email, midoc_user, password, dni, picture_url, blood_type, allergic_reaction, token_sinch, is_enterprise_enabled)
 VALUES (2,'Isaac Gab','2000-03-25','fredyac0106@gmail.com','falejandro','12334','50607091',null,'O','No alergias','42314123',null);
-INSERT INTO patient(location_id, name, year_of_birth, email, midoc_user, password, dni, picture_url, blood_type, allergic_reaction, token_sinch, is_enterprise_enabled)
+INSERT INTO patient(enterprise_id, name, year_of_birth, email, midoc_user, password, dni, picture_url, blood_type, allergic_reaction, token_sinch, is_enterprise_enabled)
 VALUES (2,'Gustavo Gap','2005-06-04','gustrago@gmail.com','ggap','12334','50607092',null,'O','No alergias','42314123',null);
 -- prod
-INSERT INTO patient(location_id, name, year_of_birth, email, midoc_user, password, dni, picture_url, blood_type, allergic_reaction, token_sinch, is_enterprise_enabled)
+INSERT INTO patient(enterprise_id, name, year_of_birth, email, midoc_user, password, dni, picture_url, blood_type, allergic_reaction, token_sinch, is_enterprise_enabled)
 VALUES (1,'Martin','2005-06-04','martin@gmail.com','martin','12334','50607083',null,'O','No alergias','42314123',null);
 
 
@@ -600,18 +601,18 @@ SELECT * from patient;
 SELECT * from doctor where type_of_specialist = 'ESPEC';
 SELECT * from doctor where type_of_specialist = 'EMERG';
 select * from medical_history;
-INSERT INTO medical_history(patient_id, doctor_id, emergencista_id, location_id, medical_history_text, symptom, doctor_comment)
-VALUES (1,2,5,1,'El paciente paso a cuidados intensivos','Paciente con quemaduras multiples','Indicaciones del especialista'  );
-INSERT INTO medical_history(patient_id, doctor_id, emergencista_id, location_id, medical_history_text, symptom, doctor_comment)
-VALUES (2,2,5,1,'Paciente cuidados intensivos','diarrea','fue necesario suero' );
-INSERT INTO medical_history(patient_id, doctor_id, emergencista_id, location_id, medical_history_text, symptom, doctor_comment)
-VALUES (3,3,4,1,'de alta','roptura de tibia','clavos de adamantio' );
-INSERT INTO medical_history(patient_id, doctor_id, emergencista_id, location_id, medical_history_text, symptom, doctor_comment)
-VALUES (4,1,5,1,'cuidados intensivos','accidente de auto','operacion inmediata' );
-INSERT INTO medical_history(patient_id, doctor_id, emergencista_id, location_id, medical_history_text, symptom, doctor_comment)
-VALUES (2,2,5,1,'quemaduras','accidente de auto','operacion inmediata' );
-INSERT INTO medical_history(patient_id, doctor_id, emergencista_id, location_id, medical_history_text, symptom, doctor_comment)
-VALUES (4,2,5,1,'intoxicacion','dolor fuerte de estomago','lavado estomacal' );
+INSERT INTO medical_history(patient_id, doctor_id, location_id, medical_history_text, symptom, doctor_comment)
+VALUES (1,2,1,'El paciente paso a cuidados intensivos','Paciente con quemaduras multiples','Indicaciones del especialista'  );
+INSERT INTO medical_history(patient_id, doctor_id, location_id, medical_history_text, symptom, doctor_comment)
+VALUES (2,2,1,'Paciente cuidados intensivos','diarrea','fue necesario suero' );
+INSERT INTO medical_history(patient_id, doctor_id, location_id, medical_history_text, symptom, doctor_comment)
+VALUES (3,3,1,'de alta','roptura de tibia','clavos de adamantio' );
+INSERT INTO medical_history(patient_id, doctor_id, location_id, medical_history_text, symptom, doctor_comment)
+VALUES (4,1,1,'cuidados intensivos','accidente de auto','operacion inmediata' );
+INSERT INTO medical_history(patient_id, doctor_id, location_id, medical_history_text, symptom, doctor_comment)
+VALUES (2,2,1,'quemaduras','accidente de auto','operacion inmediata' );
+INSERT INTO medical_history(patient_id, doctor_id, location_id, medical_history_text, symptom, doctor_comment)
+VALUES (4,2,1,'intoxicacion','dolor fuerte de estomago','lavado estomacal' );
 
 -- prod
 INSERT INTO medical_history(patient_id, doctor_id, emergencista_id, location_id, medical_history_text, symptom, doctor_comment)
